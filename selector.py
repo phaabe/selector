@@ -209,11 +209,14 @@ def main(stdscr):
             selected = filtered_entries[selected_index]
             path = os.path.join(current_dir, selected)
             if os.path.isfile(path):
-                try:
-                    shutil.copy(path, os.path.join(target_dir, selected))
-                except Exception as e:
-                    stdscr.addstr(height - 1, 0, f"Error copying: {e}")
-                    stdscr.getch()
+                if os.path.isfile(os.path.join(target_dir, selected)):
+                    os.remove(os.path.join(target_dir, selected))
+                else:
+                    try:
+                        shutil.copy(path, os.path.join(target_dir, selected))
+                    except Exception as e:
+                        stdscr.addstr(height - 1, 0, f"Error copying: {e}")
+                        stdscr.getch()
         elif key == ord('q'):
             break
         elif key == ord('s'):
